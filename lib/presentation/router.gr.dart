@@ -29,7 +29,7 @@ class Router extends RouterBase {
     switch (settings.name) {
       case Routes.homePage:
         return MaterialPageRoute<dynamic>(
-          builder: (context) => HomePage(),
+          builder: (context) => HomePage().wrappedRoute(context),
           settings: settings,
         );
       default:
