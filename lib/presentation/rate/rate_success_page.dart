@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:ccr/constants.dart';
 import 'package:ccr/presentation/widgets/base_scaffold.dart';
+import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/material.dart';
 
 class RateSuccessPage extends StatelessWidget {
@@ -55,6 +56,25 @@ class RateSuccessPage extends StatelessWidget {
                     style: TextStyle(color: Colors.white, fontSize: 24),
                   ),
                 ),
+              ),
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            InkWell(
+              onTap: () => Share.text(
+                'Baixe o app QAP',
+                'Eu acabei de ganhar ${points.toInt()} no QAP, baixa também.',
+                'text/plain',
+              ),
+              child: Text(
+                "Compartilhar com amigos\n(+ 5 pontos)",
+                style: TextStyle(
+                  fontSize: 12,
+                  color: kBackgroudColor02,
+                  letterSpacing: 0.5,
+                ),
+                textAlign: TextAlign.center,
               ),
             )
           ],

@@ -4,10 +4,12 @@ import 'package:ccr/domain/models/user.dart';
 import 'package:ccr/injection.dart';
 import 'package:ccr/presentation/home/bloc/home_bloc.dart';
 import 'package:ccr/presentation/router.gr.dart';
+import 'package:ccr/presentation/splash/splash_page.dart';
 import 'package:ccr/presentation/widgets/base_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:qrscan/qrscan.dart' as scanner;
 
 class HomePage extends StatefulWidget with AutoRouteWrapper {
   @override
@@ -19,12 +21,21 @@ class HomePage extends StatefulWidget with AutoRouteWrapper {
 }
 
 class _HomePageState extends State<HomePage> {
+  bool isSplashPage;
+
   @override
   void initState() {
     super.initState();
     context.bloc<HomeBloc>().add(
           HomeOnOpenPage(),
         );
+    isSplashPage = true;
+
+    Future.delayed(Duration(milliseconds: 1000)).then((value) {
+      setState(() {
+        isSplashPage = false;
+      });
+    });
   }
 
   int _selectedIndex = 0;
@@ -38,16 +49,21 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    return BaseScaffold(
-      bottomNavigationBar: _buildNavigationBottomBar(),
-      body: Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: 16,
-        ),
-        child: SingleChildScrollView(
-          child: _buildHomeBody(size),
-        ),
-      ),
+    return AnimatedSwitcher(
+      duration: Duration(seconds: 3),
+      child: isSplashPage
+          ? SplashPage()
+          : BaseScaffold(
+              bottomNavigationBar: _buildNavigationBottomBar(),
+              body: Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 16,
+                ),
+                child: SingleChildScrollView(
+                  child: _buildHomeBody(size),
+                ),
+              ),
+            ),
     );
   }
 
@@ -289,8 +305,7 @@ class _HomePageState extends State<HomePage> {
                 children: <Widget>[
                   _buildGridItem("Alimentação", "assets/icons/comida.svg"),
                   _buildGridItem("Banheiros e\nbanho", "assets/icons/wc.svg"),
-                  _buildGridItem(
-                      "Praça de\ndescanso", "assets/icons/descanso.svg"),
+                  _buildGridItem("Pernoite", "assets/icons/dormir.svg"),
                 ],
               ),
               SizedBox(
@@ -299,10 +314,11 @@ class _HomePageState extends State<HomePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  _buildGridItem("Pernoite", "assets/icons/dormir.svg"),
+                  _buildGridItem(
+                      "Praça de\ndescanso", "assets/icons/descanso.svg"),
+                  _buildGridItem("Segurança", "assets/icons/seguranca.svg"),
                   _buildGridItem(
                       "Serviços e\nManutenção", "assets/icons/servicos.svg"),
-                  _buildGridItem("Saúde", "assets/icons/saude.svg"),
                 ],
               ),
             ],
@@ -389,7 +405,7 @@ class _HomePageState extends State<HomePage> {
                   height: 8,
                 ),
                 Text(
-                  "+ 50 pontos",
+                  "+ 60 pontos",
                   style: TextStyle(color: kYellowColor, fontSize: 16),
                 ),
               ],
@@ -486,7 +502,7 @@ class _HomePageState extends State<HomePage> {
           borderSide: BorderSide(
             color: kBrandColor,
           ),
-          onPressed: () => null,
+          onPressed: () async => await scanner.scan(),
           shape: RoundedRectangleBorder(
             borderRadius: new BorderRadius.circular(4.0),
           ),

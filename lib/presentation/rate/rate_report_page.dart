@@ -81,23 +81,40 @@ class _RateReportPageState extends State<RateReportPage> {
                       ),
                       _buildButtonBottom(
                         text: "Avançar",
-                        onPressed: () => widget.currStep.index ==
-                                widget.steps.length
-                            ? ExtendedNavigator.of(context).pushNamed(
-                                Routes.rateSendPage,
-                                arguments: RateSendPageArguments(
-                                  stoppingName: widget.stoppingPointName,
-                                  reviews: widget.reviews,
+                        onPressed: () {
+                          final reviews = widget.reviews
+                              .asMap()
+                              .map(
+                                (index, value) => MapEntry(
+                                  index,
+                                  value.copyWith(
+                                    point: (index == widget.reviews.length - 1)
+                                        ? value.point + 10
+                                        : value.point,
+                                  ),
                                 ),
                               )
-                            : ExtendedNavigator.of(context).pushNamed(
-                                Routes.rateStepPage,
-                                arguments: RateStepPageArguments(
+                              .values
+                              .toList();
+
+                          widget.currStep.index == widget.steps.length
+                              ? ExtendedNavigator.of(context).pushNamed(
+                                  Routes.rateSendPage,
+                                  arguments: RateSendPageArguments(
+                                    stoppingName: widget.stoppingPointName,
+                                    reviews: reviews,
+                                  ),
+                                )
+                              : ExtendedNavigator.of(context).pushNamed(
+                                  Routes.rateStepPage,
+                                  arguments: RateStepPageArguments(
                                     stoppingPointName: widget.stoppingPointName,
                                     indexStep: widget.currStep.index + 1.0,
                                     steps: widget.steps,
-                                    reviews: widget.reviews),
-                              ),
+                                    reviews: reviews,
+                                  ),
+                                );
+                        },
                       ),
                     ],
                   )

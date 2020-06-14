@@ -60,7 +60,7 @@ T _$enumDecodeNullable<T>(
 }
 
 const _$ReviewTypeEnumMap = {
-  ReviewType.health: 'health',
+  ReviewType.security: 'security',
   ReviewType.food: 'food',
   ReviewType.rest: 'rest',
   ReviewType.sleep: 'sleep',

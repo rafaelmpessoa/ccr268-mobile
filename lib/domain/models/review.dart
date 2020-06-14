@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'review.freezed.dart';
 part 'review.g.dart';
 
-enum ReviewType { health, food, rest, sleep, services, bathroom }
+enum ReviewType { security, food, rest, sleep, services, bathroom }
 
 @freezed
 abstract class Review with _$Review {
