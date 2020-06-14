@@ -30,98 +30,103 @@ class _RateReportPageState extends State<RateReportPage> {
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            InkWell(
-              onTap: () => ExtendedNavigator.of(context).pop(),
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Icon(Icons.arrow_back),
+      body: Container(
+        color: Colors.white,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              InkWell(
+                onTap: () => ExtendedNavigator.of(context).pop(),
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Icon(Icons.arrow_back),
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  _buildStepHeader(),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  _buildProgressBar(widget.currStep.points),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  Column(
-                    children: <Widget>[
-                      Text(
-                        widget.currStep.name,
-                        style: TextStyle(fontSize: 24),
-                      ),
-                      SizedBox(
-                        height: 12,
-                      ),
-                      _buildRatingBar(widget.reviews.last.ratting),
-                      SizedBox(
-                        height: 12,
-                      ),
-                      TextField(
-                        maxLines: 10,
-                        maxLength: 100,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(width: 1),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    _buildStepHeader(),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    _buildProgressBar(widget.currStep.points),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    Column(
+                      children: <Widget>[
+                        Text(
+                          widget.currStep.name,
+                          style: TextStyle(fontSize: 24),
+                        ),
+                        SizedBox(
+                          height: 12,
+                        ),
+                        _buildRatingBar(widget.reviews.last.ratting),
+                        SizedBox(
+                          height: 12,
+                        ),
+                        TextField(
+                          maxLines: 10,
+                          maxLength: 100,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(width: 1),
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      _buildButtonBottom(
-                        text: "Avançar",
-                        onPressed: () {
-                          final reviews = widget.reviews
-                              .asMap()
-                              .map(
-                                (index, value) => MapEntry(
-                                  index,
-                                  value.copyWith(
-                                    point: (index == widget.reviews.length - 1)
-                                        ? value.point + 10
-                                        : value.point,
-                                  ),
-                                ),
-                              )
-                              .values
-                              .toList();
-
-                          widget.currStep.index == widget.steps.length
-                              ? ExtendedNavigator.of(context).pushNamed(
-                                  Routes.rateSendPage,
-                                  arguments: RateSendPageArguments(
-                                    stoppingName: widget.stoppingPointName,
-                                    reviews: reviews,
+                        SizedBox(
+                          height: 16,
+                        ),
+                        _buildButtonBottom(
+                          text: "Avançar",
+                          onPressed: () {
+                            final reviews = widget.reviews
+                                .asMap()
+                                .map(
+                                  (index, value) => MapEntry(
+                                    index,
+                                    value.copyWith(
+                                      point:
+                                          (index == widget.reviews.length - 1)
+                                              ? value.point + 10
+                                              : value.point,
+                                    ),
                                   ),
                                 )
-                              : ExtendedNavigator.of(context).pushNamed(
-                                  Routes.rateStepPage,
-                                  arguments: RateStepPageArguments(
-                                    stoppingPointName: widget.stoppingPointName,
-                                    indexStep: widget.currStep.index + 1.0,
-                                    steps: widget.steps,
-                                    reviews: reviews,
-                                  ),
-                                );
-                        },
-                      ),
-                    ],
-                  )
-                ],
+                                .values
+                                .toList();
+
+                            widget.currStep.index == widget.steps.length
+                                ? ExtendedNavigator.of(context).pushNamed(
+                                    Routes.rateSendPage,
+                                    arguments: RateSendPageArguments(
+                                      stoppingName: widget.stoppingPointName,
+                                      reviews: reviews,
+                                    ),
+                                  )
+                                : ExtendedNavigator.of(context).pushNamed(
+                                    Routes.rateStepPage,
+                                    arguments: RateStepPageArguments(
+                                      stoppingPointName:
+                                          widget.stoppingPointName,
+                                      indexStep: widget.currStep.index + 1.0,
+                                      steps: widget.steps,
+                                      reviews: reviews,
+                                    ),
+                                  );
+                          },
+                        ),
+                      ],
+                    )
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

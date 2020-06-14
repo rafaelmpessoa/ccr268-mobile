@@ -11,7 +11,8 @@ class RateSuccessPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
-      body: Padding(
+      body: Container(
+        color: Colors.white,
         padding: const EdgeInsets.symmetric(horizontal: 75),
         child: Column(
           children: <Widget>[

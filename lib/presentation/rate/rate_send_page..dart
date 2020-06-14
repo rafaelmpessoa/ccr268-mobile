@@ -51,86 +51,90 @@ class RateSendPage extends StatelessWidget with AutoRouteWrapper {
         );
       },
       child: BaseScaffold(
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              InkWell(
-                onTap: () => ExtendedNavigator.of(context).pop(),
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Icon(Icons.arrow_back),
+        body: Container(
+          color: Colors.white,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                InkWell(
+                  onTap: () => ExtendedNavigator.of(context).pop(),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Icon(Icons.arrow_back),
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "Avaliar estabelecimento",
-                        style:
-                            TextStyle(fontSize: 16, color: kBackgroudColor02),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Avaliar estabelecimento",
+                          style:
+                              TextStyle(fontSize: 16, color: kBackgroudColor02),
+                        ),
                       ),
-                    ),
-                    SingleChildScrollView(
-                      child: Column(
-                        children: <Widget>[
-                          SizedBox(
-                            height: 64,
-                          ),
-                          Text(
-                            stoppingName,
-                            style: TextStyle(
-                              color: kBackgroudColor02,
-                              fontSize: 24,
+                      SingleChildScrollView(
+                        child: Column(
+                          children: <Widget>[
+                            SizedBox(
+                              height: 64,
                             ),
-                          ),
-                          SizedBox(
-                            height: 32,
-                          ),
-                          _buildListItens(),
-                          SizedBox(
-                            height: 32,
-                          ),
-                          Text(
-                            "Você vai ganhar ${getTotalPoint()} pontos",
-                            style: TextStyle(
-                              fontSize: 24,
-                              color: kBackgroudColor02,
+                            Text(
+                              stoppingName,
+                              style: TextStyle(
+                                color: kBackgroudColor02,
+                                fontSize: 24,
+                              ),
                             ),
-                          ),
-                          SizedBox(
-                            height: 16,
-                          ),
-                          Container(
-                            height: 50,
-                            width: 215,
-                            child: RaisedButton(
-                              onPressed: () => context.bloc<RateSendBloc>().add(
-                                    RateSendOnSendPressed(reviews),
-                                  ),
-                              color: kBrandColor,
-                              child: Center(
-                                child: Text(
-                                  "Enviar Avaliação",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 24,
+                            SizedBox(
+                              height: 32,
+                            ),
+                            _buildListItens(),
+                            SizedBox(
+                              height: 32,
+                            ),
+                            Text(
+                              "Você vai ganhar ${getTotalPoint()} pontos",
+                              style: TextStyle(
+                                fontSize: 24,
+                                color: kBackgroudColor02,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 16,
+                            ),
+                            Container(
+                              height: 50,
+                              width: 215,
+                              child: RaisedButton(
+                                onPressed: () =>
+                                    context.bloc<RateSendBloc>().add(
+                                          RateSendOnSendPressed(reviews),
+                                        ),
+                                color: kBrandColor,
+                                child: Center(
+                                  child: Text(
+                                    "Enviar Avaliação",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 24,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          )
-                        ],
-                      ),
-                    )
-                  ],
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

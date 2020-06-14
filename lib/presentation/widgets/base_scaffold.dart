@@ -1,3 +1,4 @@
+import 'package:ccr/constants.dart';
 import 'package:flutter/material.dart';
 
 class BaseScaffold extends StatelessWidget {
@@ -9,7 +10,10 @@ class BaseScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SafeArea(child: body),
+      body: Container(
+        child: SafeArea(child: body),
+        color: kBrandColor,
+      ),
       bottomNavigationBar: bottomNavigationBar,
     );
   }

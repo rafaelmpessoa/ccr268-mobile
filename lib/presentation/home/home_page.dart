@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:ccr/constants.dart';
 import 'package:ccr/domain/models/user.dart';
 import 'package:ccr/injection.dart';
+import 'package:ccr/presentation/explore/explore_page.dart';
 import 'package:ccr/presentation/home/bloc/home_bloc.dart';
 import 'package:ccr/presentation/router.gr.dart';
 import 'package:ccr/presentation/splash/splash_page.dart';
@@ -31,11 +32,15 @@ class _HomePageState extends State<HomePage> {
         );
     isSplashPage = true;
 
-    Future.delayed(Duration(milliseconds: 1000)).then((value) {
-      setState(() {
-        isSplashPage = false;
-      });
-    });
+    Future.delayed(Duration(milliseconds: 1000)).then(
+      (value) {
+        setState(
+          () {
+            isSplashPage = false;
+          },
+        );
+      },
+    );
   }
 
   int _selectedIndex = 0;
@@ -44,6 +49,17 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  Widget _selectPage(Size size) {
+    switch (_selectedIndex) {
+      case 2:
+        return ExplorePage();
+        break;
+      default:
+        return _buldHomePage(size);
+        break;
+    }
   }
 
   @override
@@ -55,15 +71,20 @@ class _HomePageState extends State<HomePage> {
           ? SplashPage()
           : BaseScaffold(
               bottomNavigationBar: _buildNavigationBottomBar(),
-              body: Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 16,
-                ),
-                child: SingleChildScrollView(
-                  child: _buildHomeBody(size),
-                ),
-              ),
+              body: _selectPage(size),
             ),
+    );
+  }
+
+  Container _buldHomePage(Size size) {
+    return Container(
+      color: Colors.white,
+      padding: EdgeInsets.symmetric(
+        horizontal: 16,
+      ),
+      child: SingleChildScrollView(
+        child: _buildHomeBody(size),
+      ),
     );
   }
 
@@ -343,7 +364,10 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       child: OutlineButton(
-        onPressed: () => null,
+        onPressed: () => ExtendedNavigator.of(context).pushNamed(
+          Routes.exploreItemPage,
+          arguments: ExploreItemPageArguments(needName: text),
+        ),
         child: Column(
           children: <Widget>[
             SizedBox(

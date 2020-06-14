@@ -68,87 +68,90 @@ class _RateStepPageState extends State<RateStepPage> {
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            InkWell(
-              onTap: () => ExtendedNavigator.of(context).pop(),
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Icon(Icons.arrow_back),
+      body: Container(
+        color: Colors.white,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              InkWell(
+                onTap: () => ExtendedNavigator.of(context).pop(),
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Icon(Icons.arrow_back),
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  _buildStepHeader(),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  _buildProgressBar(currentStep.points),
-                  SizedBox(
-                    height: 32,
-                  ),
-                  Container(
-                    width: double.infinity,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        SvgPicture.asset(
-                          currentStep.imgPath,
-                          height: 200,
-                        ),
-                        SizedBox(
-                          height: 4,
-                        ),
-                        Text(
-                          currentStep.name,
-                          style: TextStyle(fontSize: 24),
-                        ),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        Text(
-                          currentStep.description ?? "",
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: kBackgroudColor02,
-                            letterSpacing: 0.25,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(
-                          height: 16,
-                        ),
-                        _buildRatingBar(),
-                        SizedBox(
-                          height: 32,
-                        ),
-                        AnimatedSwitcher(
-                          duration: Duration(milliseconds: 500),
-                          child: indexAnswer > 0
-                              ? _buildAnsweredButtons()
-                              : InkWell(
-                                  onTap: nextRouter,
-                                  child: Text(
-                                    "Não utilizei o serviço",
-                                    style: TextStyle(
-                                        color: kBackgroudColor02,
-                                        fontSize: 16,
-                                        letterSpacing: 0.45),
-                                  ),
-                                ),
-                        ),
-                      ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    _buildStepHeader(),
+                    SizedBox(
+                      height: 8,
                     ),
-                  ),
-                ],
+                    _buildProgressBar(currentStep.points),
+                    SizedBox(
+                      height: 32,
+                    ),
+                    Container(
+                      width: double.infinity,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          SvgPicture.asset(
+                            currentStep.imgPath,
+                            height: 200,
+                          ),
+                          SizedBox(
+                            height: 4,
+                          ),
+                          Text(
+                            currentStep.name,
+                            style: TextStyle(fontSize: 24),
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
+                          Text(
+                            currentStep.description ?? "",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: kBackgroudColor02,
+                              letterSpacing: 0.25,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(
+                            height: 16,
+                          ),
+                          _buildRatingBar(),
+                          SizedBox(
+                            height: 32,
+                          ),
+                          AnimatedSwitcher(
+                            duration: Duration(milliseconds: 500),
+                            child: indexAnswer > 0
+                                ? _buildAnsweredButtons()
+                                : InkWell(
+                                    onTap: nextRouter,
+                                    child: Text(
+                                      "Não utilizei o serviço",
+                                      style: TextStyle(
+                                          color: kBackgroudColor02,
+                                          fontSize: 16,
+                                          letterSpacing: 0.45),
+                                    ),
+                                  ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

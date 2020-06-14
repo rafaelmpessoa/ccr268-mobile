@@ -15,55 +15,58 @@ class RatePage extends StatelessWidget with StepMixin {
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          // SizedBox(
-          //   height: kPaddingVertial,
-          // ),
-          InkWell(
-            onTap: () => ExtendedNavigator.of(context).pop(),
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Icon(Icons.arrow_back),
-            ),
-          ),
-
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: kPaddingVertial),
-            child: _buildHeader(),
-          ),
-          // MAPA
-          // Container(
-          //   height: kBoxHeigth,
-          //   width: double.infinity,
-          //   color: kBackgroudColor01,
-          // ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  _buildListItem("POSTO KM456",
-                      "Novas instalações inauguradas!", 4, 32, context),
-                  SizedBox(
-                    height: 26,
-                  ),
-                  _buildListItem("Restaurante Zé Maria",
-                      "Toda terça, festival de salgados!", 2, 402, context),
-                  SizedBox(
-                    height: 26,
-                  ),
-                  _buildListItem("POSTO KM240", "", 3, 603, context),
-                  SizedBox(
-                    height: kPaddingVertial,
-                  ),
-                ],
+      body: Container(
+        color: Colors.white,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            // SizedBox(
+            //   height: kPaddingVertial,
+            // ),
+            InkWell(
+              onTap: () => ExtendedNavigator.of(context).pop(),
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Icon(Icons.arrow_back),
               ),
             ),
-          )
-        ],
+
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: kPaddingVertial),
+              child: _buildHeader(),
+            ),
+            // MAPA
+            // Container(
+            //   height: kBoxHeigth,
+            //   width: double.infinity,
+            //   color: kBackgroudColor01,
+            // ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    _buildListItem("POSTO KM456",
+                        "Novas instalações inauguradas!", 4, 32, context),
+                    SizedBox(
+                      height: 26,
+                    ),
+                    _buildListItem("Restaurante Zé Maria",
+                        "Toda terça, festival de salgados!", 2, 402, context),
+                    SizedBox(
+                      height: 26,
+                    ),
+                    _buildListItem("POSTO KM240", "", 3, 603, context),
+                    SizedBox(
+                      height: kPaddingVertial,
+                    ),
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

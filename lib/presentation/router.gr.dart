@@ -15,6 +15,7 @@ import 'package:ccr/domain/models/review.dart';
 import 'package:ccr/presentation/rate/rate_report_page.dart';
 import 'package:ccr/presentation/rate/rate_send_page..dart';
 import 'package:ccr/presentation/rate/rate_success_page.dart';
+import 'package:ccr/presentation/explore/explore_item_page.dart';
 
 abstract class Routes {
   static const homePage = '/';
@@ -23,6 +24,7 @@ abstract class Routes {
   static const rateReportPage = '/rate-report-page';
   static const rateSendPage = '/rate-send-page';
   static const rateSuccessPage = '/rate-success-page';
+  static const exploreItemPage = '/explore-item-page';
   static const all = {
     homePage,
     ratePage,
@@ -30,6 +32,7 @@ abstract class Routes {
     rateReportPage,
     rateSendPage,
     rateSuccessPage,
+    exploreItemPage,
   };
 }
 
@@ -110,6 +113,15 @@ class Router extends RouterBase {
               RateSuccessPage(key: typedArgs.key, points: typedArgs.points),
           settings: settings,
         );
+      case Routes.exploreItemPage:
+        if (hasInvalidArgs<ExploreItemPageArguments>(args, isRequired: true)) {
+          return misTypedArgsRoute<ExploreItemPageArguments>(args);
+        }
+        final typedArgs = args as ExploreItemPageArguments;
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => ExploreItemPage(typedArgs.needName),
+          settings: settings,
+        );
       default:
         return unknownRoutePage(settings.name);
     }
@@ -167,4 +179,10 @@ class RateSuccessPageArguments {
   final Key key;
   final double points;
   RateSuccessPageArguments({this.key, @required this.points});
+}
+
+//ExploreItemPage arguments holder class
+class ExploreItemPageArguments {
+  final String needName;
+  ExploreItemPageArguments({@required this.needName});
 }
