@@ -7,10 +7,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       builder: (ctx, __) => ExtendedNavigator<Router>(
         router: Router(),
       ),
-      // initialRoute: Routes.splashPage,
     );
   }
 }

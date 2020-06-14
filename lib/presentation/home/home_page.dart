@@ -120,24 +120,27 @@ class _HomePageState extends State<HomePage> {
           height: 100,
           width: double.infinity,
           decoration: BoxDecoration(
-            color: Color(0xFF76C86D),
             borderRadius: BorderRadius.circular(4),
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              SvgPicture.asset('assets/icons/wpp.svg'),
-              Text(
-                "Entre em contato com a CCR",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  letterSpacing: 0.15,
-                  fontSize: 20,
-                  color: Color(0xFF003C18),
-                  fontWeight: FontWeight.w600,
+          child: RaisedButton(
+            color: Color(0xFF76C86D),
+            onPressed: () => null,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                SvgPicture.asset('assets/icons/wpp.svg'),
+                Text(
+                  "Entre em contato com a CCR",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    letterSpacing: 0.15,
+                    fontSize: 20,
+                    color: Color(0xFF003C18),
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         )
       ],
@@ -339,24 +342,27 @@ class _HomePageState extends State<HomePage> {
           width: 1,
         ),
       ),
-      child: Column(
-        children: <Widget>[
-          SizedBox(
-            height: 24,
-          ),
-          SvgPicture.asset(icon),
-          SizedBox(
-            height: 16,
-          ),
-          Text(
-            text,
-            style: TextStyle(
-              color: kBackgroudColor02,
-              fontSize: 12,
+      child: OutlineButton(
+        onPressed: () => null,
+        child: Column(
+          children: <Widget>[
+            SizedBox(
+              height: 24,
             ),
-            textAlign: TextAlign.center,
-          )
-        ],
+            SvgPicture.asset(icon),
+            SizedBox(
+              height: 16,
+            ),
+            Text(
+              text,
+              style: TextStyle(
+                color: kBackgroudColor02,
+                fontSize: 12,
+              ),
+              textAlign: TextAlign.center,
+            )
+          ],
+        ),
       ),
     );
   }
@@ -365,15 +371,17 @@ class _HomePageState extends State<HomePage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        InkWell(
-          onTap: () => ExtendedNavigator.of(context).pushNamed(Routes.ratePage),
-          child: Container(
-            height: 100,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: kBrandColor,
-              borderRadius: BorderRadius.circular(4),
-            ),
+        Container(
+          height: 100,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: kBrandColor,
+            borderRadius: BorderRadius.circular(4),
+          ),
+          child: RaisedButton(
+            color: kBrandColor,
+            onPressed: () =>
+                ExtendedNavigator.of(context).pushNamed(Routes.ratePage),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
@@ -451,18 +459,37 @@ class _HomePageState extends State<HomePage> {
 
   BottomNavigationBar _buildNavigationBottomBar() {
     return BottomNavigationBar(
-      items: const <BottomNavigationBarItem>[
+      type: BottomNavigationBarType.shifting,
+      items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          title: Text('Home'),
+          icon: Icon(
+            Icons.home,
+            color: _selectedIndex == 0 ? null : kBackgroudColor04,
+          ),
+          title: Text(
+            'Home',
+          ),
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.business),
-          title: Text('Business'),
+          icon: Icon(
+            Icons.restaurant,
+            color: _selectedIndex == 1 ? null : kBackgroudColor04,
+          ),
+          title: Text('Serviços'),
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.school),
-          title: Text('School'),
+          icon: Icon(
+            Icons.search,
+            color: _selectedIndex == 2 ? null : kBackgroudColor04,
+          ),
+          title: Text('Explorar'),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(
+            Icons.person,
+            color: _selectedIndex == 3 ? null : kBackgroudColor04,
+          ),
+          title: Text('Perfil'),
         ),
       ],
       currentIndex: _selectedIndex,

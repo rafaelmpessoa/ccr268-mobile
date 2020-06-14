@@ -3,17 +3,6 @@ import 'package:ccr/domain/models/review.dart';
 
 mixin StepMixin {
   List<AppStep> getListAppStep() {
-//     AppStep( index: 1, name: "Alimentação", points: 10, description: "Avalie preço, variedade de cardápio, espaço, higiene, etc", imgPath: "assets/icons/wc.png", reviewType: ReviewType.bathroom, ),
-
-// AppStep( index: 2, name: "Banheiros e banho", points: 10, description: "Avalie condições do banheiro, manutenção, segurança, privacidade, limpeza, preço, etc", imgPath: "assets/icons/wc.png", reviewType: ReviewType.bathroom, ),
-
-// AppStep( index: 3, name: "Pernoite", points: 10, description: "Avalie conforto, preço, segurança, atendimento, etc", imgPath: "assets/icons/wc.png", reviewType: ReviewType.bathroom, ),
-
-// AppStep( index: 4, name: "Praça de descanso", points: 10, description: "Avalie conforto, disponibilidade de recursos, tranquilidade, informações, etc", imgPath: "assets/icons/wc.png", reviewType: ReviewType.bathroom, ),
-
-// AppStep( index: 5, name: "Segurança", points: 10, description: “Avalie monitoramento, confiança, etc", imgPath: "assets/icons/wc.png", reviewType: ReviewType.bathroom, ),
-
-// AppStep( index: 6, name: "Serviços e Manutenção", points: 10, description: "Avalie variedade de serviços, atendimento, preço de combustível, etc”, imgPath: "assets/icons/wc.png", reviewType: ReviewType.bathroom, ),
     return [
       AppStep(
         index: 1,
@@ -21,7 +10,7 @@ mixin StepMixin {
         points: 10,
         description:
             "Avalie preço, variedade de cardápio, espaço, higiene, etc",
-        imgPath: "assets/images/alimentacao.png",
+        imgPath: "assets/images/alimentacao.svg",
         reviewType: ReviewType.food,
       ),
       AppStep(
@@ -30,7 +19,7 @@ mixin StepMixin {
         points: 10,
         description:
             "Avalie condições do banheiro, manutenção, segurança, privacidade, limpeza, preço, etc",
-        imgPath: "assets/images/banho.png",
+        imgPath: "assets/images/banho.svg",
         reviewType: ReviewType.bathroom,
       ),
       AppStep(
@@ -38,7 +27,7 @@ mixin StepMixin {
         name: "Pernoite",
         points: 10,
         description: "Avalie conforto, preço, segurança, atendimento, etc",
-        imgPath: "assets/images/pernoite.png",
+        imgPath: "assets/images/pernoite.svg",
         reviewType: ReviewType.sleep,
       ),
       AppStep(
@@ -47,7 +36,7 @@ mixin StepMixin {
         points: 10,
         description:
             "Avalie conforto, disponibilidade de recursos, tranquilidade, informações, etc",
-        imgPath: "assets/images/descanso.png",
+        imgPath: "assets/images/descanso.svg",
         reviewType: ReviewType.rest,
       ),
       AppStep(
@@ -55,7 +44,7 @@ mixin StepMixin {
         name: "Segurança",
         points: 10,
         description: "Avalie monitoramento, confiança, etc",
-        imgPath: "assets/images/seguranca.png",
+        imgPath: "assets/images/seguranca.svg",
         reviewType: ReviewType.security,
       ),
       AppStep(
@@ -64,7 +53,7 @@ mixin StepMixin {
         points: 10,
         description:
             "Avalie variedade de serviços, atendimento, preço de combustível, etc",
-        imgPath: "assets/images/servicos.png",
+        imgPath: "assets/images/servicos.svg",
         reviewType: ReviewType.services,
       ),
     ];

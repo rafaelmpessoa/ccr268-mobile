@@ -97,7 +97,7 @@ class _RateStepPageState extends State<RateStepPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        Image.asset(
+                        SvgPicture.asset(
                           currentStep.imgPath,
                           height: 200,
                         ),
