@@ -1,9 +1,13 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:ccr/constants.dart';
+import 'package:ccr/domain/models/user.dart';
 import 'package:ccr/injection.dart';
 import 'package:ccr/presentation/home/bloc/home_bloc.dart';
+import 'package:ccr/presentation/router.gr.dart';
+import 'package:ccr/presentation/widgets/base_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 
 class HomePage extends StatefulWidget with AutoRouteWrapper {
   @override
@@ -19,7 +23,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     context.bloc<HomeBloc>().add(
-          HomeFetchStoppingPoints(),
+          HomeOnOpenPage(),
         );
   }
 
@@ -34,13 +38,15 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    return SafeArea(
-      child: Scaffold(
-        body: Container(
-          padding: EdgeInsets.only(top: 13, left: 17, right: 17),
-          child: SingleChildScrollView(child: _buildHomeBody(size)),
+    return BaseScaffold(
+      bottomNavigationBar: _buildNavigationBottomBar(),
+      body: Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: 16,
         ),
-        bottomNavigationBar: _buildNavigationBottomBar(),
+        child: SingleChildScrollView(
+          child: _buildHomeBody(size),
+        ),
       ),
     );
   }
@@ -49,13 +55,20 @@ class _HomePageState extends State<HomePage> {
     return Container(
       child: Column(
         children: <Widget>[
-          _buildHeaderUserData(),
           SizedBox(
-            height: 12,
+            height: 24,
           ),
-          _buildUseMyPoints(size),
+          BlocBuilder<HomeBloc, HomeState>(
+            builder: (context, state) {
+              return _buildHeaderUserData(
+                state is HomeLoaded
+                    ? state.user
+                    : User(name: "", totalPoints: 0),
+              );
+            },
+          ),
           SizedBox(
-            height: 30,
+            height: 24,
           ),
           _buildRattingStoppingPoint(),
           SizedBox(
@@ -66,31 +79,52 @@ class _HomePageState extends State<HomePage> {
             height: 40,
           ),
           _buildListNews(),
-          SizedBox(
-            height: 50,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text("Ajuda ccr"),
-              SizedBox(
-                height: 16,
-              ),
-              Container(
-                height: 100,
-                width: double.infinity,
-                color: kBackgroudColor01,
-                child: Center(
-                  child: Text(
-                    "Entre em contato com a CCR\n(whatsapp)",
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              )
-            ],
-          )
+          _buildWppCall()
         ],
       ),
+    );
+  }
+
+  Column _buildWppCall() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          "Ajuda CCR",
+          style: TextStyle(
+            letterSpacing: 0.15,
+            fontSize: 16,
+            color: Color(0xFF828282),
+          ),
+        ),
+        SizedBox(
+          height: 16,
+        ),
+        Container(
+          height: 100,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Color(0xFF76C86D),
+            borderRadius: BorderRadius.circular(4),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SvgPicture.asset('assets/icons/wpp.svg'),
+              Text(
+                "Entre em contato com a CCR",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  letterSpacing: 0.15,
+                  fontSize: 20,
+                  color: Color(0xFF003C18),
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+        )
+      ],
     );
   }
 
@@ -103,24 +137,55 @@ class _HomePageState extends State<HomePage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text("Atualizações"),
-              Text("Regiões: Todas"),
+              Text(
+                "Atualizações",
+                style: TextStyle(
+                  fontSize: 16,
+                  color: kBackgroudColor03,
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
+                decoration: BoxDecoration(
+                  color: kBackgroudColor06,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Text(
+                  "Regiões: Todas".toUpperCase(),
+                  style: TextStyle(
+                    letterSpacing: 1.5,
+                    fontSize: 10,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
             ],
           ),
           SizedBox(
-            height: 13,
+            height: 16,
           ),
           Container(
             height: 250,
-            child: ListView.separated(
+            child: ListView.builder(
               shrinkWrap: true,
-              itemCount: 3,
+              itemCount: 1,
               itemBuilder: (BuildContext context, int index) {
-                return _buildNewsItem("PARADA 2 , reformulada", "20");
-              },
-              separatorBuilder: (BuildContext context, int index) {
-                return SizedBox(
-                  height: 8,
+                return Column(
+                  children: <Widget>[
+                    _buildNewsItem(
+                        "POSTO KM456",
+                        "Novas instalações inauguradas!",
+                        500,
+                        "assets/images/stoppint_2.png"),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    _buildNewsItem(
+                        "Restaurante Zé Maria",
+                        "Toda terça festival de salgados",
+                        500,
+                        "assets/images/stopping_2.png"),
+                  ],
                 );
               },
             ),
@@ -131,25 +196,74 @@ class _HomePageState extends State<HomePage> {
   }
 
   Container _buildNewsItem(
-    String newsText,
-    String km,
+    String title,
+    String description,
+    double distance,
+    String imgPath,
   ) {
     return Container(
       height: 100,
       width: double.infinity,
-      color: kBackgroudColor01,
-      child: Stack(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(4),
+        border: Border.all(
+          color: kBackgroudColor05,
+        ),
+      ),
+      child: Row(
         children: <Widget>[
-          Positioned(
-            top: 20,
-            left: 31,
-            child: Text(newsText),
+          Image.asset(
+            imgPath,
+            fit: BoxFit.fitHeight,
           ),
-          Positioned(
-            bottom: 4,
-            right: 11,
-            child: Text("a $km km de você"),
-          )
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 16,
+                    letterSpacing: 0.4,
+                    color: Color(0xFF828282),
+                  ),
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                Text(
+                  description,
+                  style: TextStyle(
+                    fontSize: 12,
+                    letterSpacing: 0.5,
+                    color: kBackgroudColor02,
+                  ),
+                ),
+                SizedBox(
+                  height: 21,
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      "a $distance metros de você",
+                      style: TextStyle(
+                          color: kBrandColor, letterSpacing: 0.5, fontSize: 12),
+                    ),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Icon(
+                      Icons.arrow_forward_ios,
+                      size: 8,
+                      color: kBrandColor,
+                    )
+                  ],
+                )
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -161,7 +275,10 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text("Procurar por necessidade"),
+          Text(
+            "Procurar por necessidade",
+            style: TextStyle(fontSize: 16, color: kBackgroudColor03),
+          ),
           SizedBox(
             height: 12,
           ),
@@ -170,9 +287,10 @@ class _HomePageState extends State<HomePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  _buildGridItem(kBackgroudColor01, "Banheiro"),
-                  _buildGridItem(kBackgroudColor01, "Banheiro"),
-                  _buildGridItem(kBackgroudColor01, "Banheiro"),
+                  _buildGridItem("Alimentação", "assets/icons/comida.svg"),
+                  _buildGridItem("Banheiros e\nbanho", "assets/icons/wc.svg"),
+                  _buildGridItem(
+                      "Praça de\ndescanso", "assets/icons/descanso.svg"),
                 ],
               ),
               SizedBox(
@@ -181,9 +299,10 @@ class _HomePageState extends State<HomePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  _buildGridItem(kBackgroudColor01, "Banheiro"),
-                  _buildGridItem(kBackgroudColor01, "Banheiro"),
-                  _buildGridItem(kBackgroudColor01, "Banheiro"),
+                  _buildGridItem("Pernoite", "assets/icons/dormir.svg"),
+                  _buildGridItem(
+                      "Serviços e\nManutenção", "assets/icons/servicos.svg"),
+                  _buildGridItem("Saúde", "assets/icons/saude.svg"),
                 ],
               ),
             ],
@@ -193,20 +312,33 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Container _buildGridItem(Color color, String text) {
+  Container _buildGridItem(String text, String icon) {
     return Container(
-      height: 100,
-      width: 100,
-      color: color,
-      child: Stack(
+      width: 104,
+      height: 104,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(2),
+        border: Border.all(
+          color: kBackgroudColor06,
+          width: 1,
+        ),
+      ),
+      child: Column(
         children: <Widget>[
-          Positioned(
-            bottom: 12,
-            left: 0,
-            right: 0,
-            child: Center(
-              child: Text(text),
+          SizedBox(
+            height: 24,
+          ),
+          SvgPicture.asset(icon),
+          SizedBox(
+            height: 16,
+          ),
+          Text(
+            text,
+            style: TextStyle(
+              color: kBackgroudColor02,
+              fontSize: 12,
             ),
+            textAlign: TextAlign.center,
           )
         ],
       ),
@@ -215,36 +347,86 @@ class _HomePageState extends State<HomePage> {
 
   Column _buildRattingStoppingPoint() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Container(
-          height: 100,
-          width: double.infinity,
-          color: kBackgroudColor01,
-          child: Center(
-            child: Text("Avaliar estabelecimento"),
+        InkWell(
+          onTap: () => ExtendedNavigator.of(context).pushNamed(Routes.ratePage),
+          child: Container(
+            height: 100,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: kBrandColor,
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(
+                  height: 12,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SvgPicture.asset('assets/icons/negative.svg'),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    SvgPicture.asset('assets/icons/positive.svg'),
+                  ],
+                ),
+                SizedBox(
+                  height: 12,
+                ),
+                Text(
+                  "Avaliar estabelecimento",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                Text(
+                  "+ 50 pontos",
+                  style: TextStyle(color: kYellowColor, fontSize: 16),
+                ),
+              ],
+            ),
           ),
         ),
         SizedBox(
           height: 8,
         ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Container(
               height: 20,
               width: 20,
               child: Center(
-                child: Text("2"),
+                child: Text(
+                  "2",
+                  style: TextStyle(color: kBrandColor),
+                ),
               ),
               decoration: new BoxDecoration(
-                color: kBackgroudColor01,
                 shape: BoxShape.circle,
+                border: Border.all(width: 1, color: kBrandColor),
               ),
             ),
             SizedBox(
               width: 8,
             ),
-            Text("Sugestões de avaliações (+ 20 pontos)")
+            Text(
+              "Sugestões de avaliações",
+              style: TextStyle(color: kBrandColor),
+            ),
+            Text(
+              " ( + 20 pontos )",
+              style: TextStyle(color: kYellowColor),
+            ),
           ],
         )
       ],
@@ -273,36 +455,48 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Align _buildUseMyPoints(Size size) {
-    return Align(
-      alignment: Alignment.centerRight,
-      child: Container(
-        height: 28,
-        alignment: Alignment.centerRight,
-        width: size.width * 0.6,
-        color: kBackgroudColor01,
-        child: Padding(
-          padding: const EdgeInsets.only(right: 9),
-          child: Text("Utilizar meus pontos"),
-        ),
-      ),
-    );
-  }
-
-  Row _buildHeaderUserData() {
+  Row _buildHeaderUserData(User user) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Text(
-          "Olá, Usuário",
-          style: TextStyle(fontSize: 24),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              "Olá, ${user.name}",
+              style: TextStyle(
+                fontSize: 24,
+                color: kBrandColor,
+              ),
+            ),
+            BlocBuilder<HomeBloc, HomeState>(
+              builder: (context, state) {
+                return Text(
+                  "${user.totalPoints.toInt()} pontos",
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: kBackgroudColor03,
+                  ),
+                );
+              },
+            )
+          ],
         ),
-        Text(
-          "5000 pontos",
-          style: TextStyle(
-            fontSize: 16,
+        OutlineButton(
+          borderSide: BorderSide(
+            color: kBrandColor,
           ),
-        ),
+          onPressed: () => null,
+          shape: RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(4.0),
+          ),
+          child: Center(
+            child: Text(
+              "Utilizar meus pontos",
+              style: TextStyle(color: kBrandColor),
+            ),
+          ),
+        )
       ],
     );
   }

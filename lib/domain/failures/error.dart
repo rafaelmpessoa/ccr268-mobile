@@ -1,4 +1,4 @@
-import 'package:ccr/domain/common/failures.dart';
+import 'package:ccr/domain/failures/failures.dart';
 
 class ServerException implements Exception {
   final String error;
